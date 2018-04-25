@@ -5,3 +5,16 @@ inherit_gem:
     - config/rails.yml
 AllCops:
   TargetRubyVersion: 2.5
+  Exclude:
+    - 'lib/tasks/auto_annotate_models.rake'
+    - 'bin/*'
+    - 'config/**/*'
+    - 'db/**/*'
+    - 'vendor/bundle/**/*'
+    - '**/Rakefile'
+    - 'spec/spec_helper.rb'
+    - 'spec/rails_helper.rb'
+    - 'spec/support/**/*'
+
+Metrics/LineLength:
+  Max: 110
