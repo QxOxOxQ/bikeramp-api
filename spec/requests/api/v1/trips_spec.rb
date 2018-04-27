@@ -4,8 +4,8 @@ require "rails_helper"
 
 RSpec.describe "Trips API", type: :request do
 
-  describe "GET api/stats/weekly" do
-    before { get "api/stats/weekly" }
+  describe "GET /api/stats/weekly" do
+    before { get "/api/stats/weekly" }
     context "when the records exists" do
       it "returns weekly stats" do
         expect(json).not_to be_empty
@@ -27,8 +27,8 @@ RSpec.describe "Trips API", type: :request do
       end
     end
   end
-  describe "GET api/stats/monthly" do
-    before { get "api/stats/monthly" }
+  describe "GET /api/stats/monthly" do
+    before { get "/api/stats/monthly" }
     it "returns daily stats" do
       expect(json).not_to be_empty
       expect(json.size).to eq(10)
@@ -38,7 +38,7 @@ RSpec.describe "Trips API", type: :request do
       expect(response).to have_http_status(200)
     end
   end
-  describe "POST api/stats/monthly" do
+  describe "POST /api/stats/monthly" do
     let(:price) { Faker::Number.decimal(2, 2) }
     let(:start) { "Plac Europejski 2, Warszawa, Polska" }
     let(:finish) { "Bohomolca 15, Warszawa, Polska" }
