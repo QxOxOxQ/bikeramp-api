@@ -16,11 +16,19 @@
 
 
 FactoryBot.define do
-  factory :trip do
+  factory :current_month_trip, class: "Trip" do
+    distance { Faker::Number.number }
+    start { "Plac Europejski 2, Warszawa, Polska" }
+    date { Faker::Date.between(Date.current.beginning_of_month, Date.yesterday) }
+    finish { "Bohomolca 15, Warszawa, Polska" }
+    price { Faker::Number.decimal(2, 2) }
+  end
+  factory :current_week_trip, class: "Trip" do
     distance { Faker::Number.decimal(2, 2) }
+    date { Faker::Date.between(Date.current.beginning_of_week, Date.yesterday) }
     start { "Plac Europejski 2, Warszawa, Polska" }
     finish { "Bohomolca 15, Warszawa, Polska" }
-    date { Faker::Date.between(33.days.ago, Date.today) }
-    price { Faker::Number.decimal(2, 2) }
+    price { Faker::Number.number }
+
   end
 end

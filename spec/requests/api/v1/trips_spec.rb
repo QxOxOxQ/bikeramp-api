@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe "Trips API", type: :request do
-
+  let!(:trips) { FactoryBot.create_list(:current_week_trip, 4) }
   describe "GET /api/stats/weekly" do
     before { get "/api/stats/weekly" }
     context "when the records exists" do
