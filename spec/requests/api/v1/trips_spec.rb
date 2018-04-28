@@ -30,19 +30,26 @@ RSpec.describe "Trips API", type: :request do
     end
   end
   describe "GET /api/stats/monthly" do
-    let!(:trips) { FactoryBot.create_list(:current_month_trip, 10) }
+    context "when the records exists" do
 
-    before { get "/api/stats/monthly" }
-    it "returns daily stats" do
-      expect(json).not_to be_empty
-      expect(json.size).to eq(10)
-    end
+      let!(:trip1) { FactoryBot.create(:current_month_trip, date: Date.yesterday) }
+      let!(:trip2) { FactoryBot.create(:current_month_trip, date: Date.yesterday) }
+      let!(:trip3) { FactoryBot.create(:current_month_trip, date: Date.current - 5.days) }
+      let!(:trip4) { FactoryBot.create(:current_month_trip, date: Date.current.last_month) }
+      let!(:trip5) { FactoryBot.create(:current_month_trip, date: Date.current) }
 
-    it "returns status code 200" do
-      expect(response).to have_http_status(200)
+      before { get "/api/stats/monthly" }
+      it "returns daily stats" do
+        expect(json).not_to be_empty
+        expect(json.size).to eq(2)
+      end
+
+      it "returns status code 200" do
+        expect(response).to have_http_status(200)
+      end
     end
     context "when the records does not exist" do
-
+      before { get "/api/stats/monthly" }
       it "returns status code 404" do
         expect(response).to have_http_status(404)
       end
