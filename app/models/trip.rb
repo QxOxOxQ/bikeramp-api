@@ -18,6 +18,6 @@
 class Trip < ApplicationRecord
   validates_presence_of :finish, :start, :date, :price
   # this gets records without current day
-  scope :last_week, -> { where(date: Date.current.beginning_of_week...Date.today) }
-  scope :last_month, -> { where(date: Date.current.beginning_of_month...Date.current) }
+  scope :current_week, -> { where(date: Date.current.beginning_of_week...Date.today).order(:date) }
+  scope :current_month, -> { where(date: Date.current.beginning_of_month...Date.current).order(:date) }
 end
