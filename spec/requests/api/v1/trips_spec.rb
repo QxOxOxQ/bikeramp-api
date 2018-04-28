@@ -3,31 +3,35 @@
 require "rails_helper"
 
 RSpec.describe "Trips API", type: :request do
-  let!(:trips) { FactoryBot.create_list(:current_week_trip, 4) }
   describe "GET /api/stats/weekly" do
-    before { get "/api/stats/weekly" }
     context "when the records exists" do
+      let!(:trips) { FactoryBot.create_list(:current_week_trip, 4) }
+      before { get "/api/stats/weekly" }
       it "returns weekly stats" do
         expect(json).not_to be_empty
-        expect(json.size).to eq(1)
+        expect(json.size).to eq(2)
+        expect(json["total_distance"]).to_not eq(nil)
+        expect(json["total_price"]).to_not eq(nil)
+      end
+      it "returns status code 200" do
+        expect(response).to have_http_status(200)
       end
     end
 
-    it "returns status code 200" do
-      expect(response).to have_http_status(200)
-    end
-
     context "when the records does not exist" do
+      before { get "/api/stats/weekly" }
 
       it "returns status code 404" do
         expect(response).to have_http_status(404)
       end
       it "returns a not found massage" do
-        expect(response.body).to match(/Couldn't find stats for last week/)
+        expect(response.body).to match(/TripsDoesNotExistInCurrentWeek/)
       end
     end
   end
   describe "GET /api/stats/monthly" do
+    let!(:trips) { FactoryBot.create_list(:current_month_trip, 10) }
+
     before { get "/api/stats/monthly" }
     it "returns daily stats" do
       expect(json).not_to be_empty
@@ -36,6 +40,15 @@ RSpec.describe "Trips API", type: :request do
 
     it "returns status code 200" do
       expect(response).to have_http_status(200)
+    end
+    context "when the records does not exist" do
+
+      it "returns status code 404" do
+        expect(response).to have_http_status(404)
+      end
+      it "returns a not found massage" do
+        expect(response.body).to match(/TripsDoesNotExistInCurrentMonth/)
+      end
     end
   end
   describe "POST /api/stats/monthly" do
