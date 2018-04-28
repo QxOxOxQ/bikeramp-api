@@ -64,23 +64,31 @@ RSpec.describe "Trips API", type: :request do
     let(:finish) { "Bohomolca 15, Warszawa, Polska" }
     let(:date) { Faker::Date.forward(23) }
 
-    let(:valid_attributes) {}
     context "when the request is valid" do
-      before { post "api/trips", params: valid_attributes }
-
+      let!(:valid_attributes) { {
+          price: price,
+          start_address: start,
+          destination_address: finish,
+          date: date }}
+      before { post "/api/trips", params: valid_attributes }
       it "returns status code 201" do
         expect(response).to have_http_status(201)
       end
     end
-    let(:invalid_attributes) {}
     context "when the request is invalid" do
-      before { post "api/trips", params: invalid_attributes }
+      let(:start) { "" }
+      let!(:invalid_attributes) { {
+           price: price,
+           start_address: start,
+           destination_address: finish,
+           date: date }}
+      before { post "/api/trips", params: invalid_attributes }
       it "returns status code 422" do
         expect(response).to have_http_status(422)
       end
       it "returns a validation failure message" do
         expect(response.body)
-            .to match(/Validation failed: Created by can't be blank/)
+            .to match("{\"start\":[\"can't be blank\"]}")
       end
     end
   end
