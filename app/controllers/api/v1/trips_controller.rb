@@ -23,7 +23,23 @@ module Api
       end
 
       def create
+        trip = Trip.new(trip_params)
+        return render json: trip.errors, status: :unprocessable_entity unless trip.valid?
+        service = GoogleMatrixApiClient::Fetch.call(trip)
+        if service.class == Trip
+          render json: service, status: :created
+        else
+          render json: service, status: :unprocessable_entity
+        end
       end
+
+      private
+        def trip_params
+          attr = params.permit(:start_address, :destination_address, :price, :date)
+          attr["start"] = attr.delete("start_address")
+          attr["finish"] = attr.delete("destination_address")
+          attr
+        end
     end
   end
 end
