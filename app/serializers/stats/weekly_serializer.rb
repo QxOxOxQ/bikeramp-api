@@ -8,6 +8,6 @@ class Stats::WeeklySerializer < ActiveModel::Serializer
   end
 
   def total_distance
-    "#{object.sum("distance") / 1000}KM"
+    "#{(object.sum("distance") / 1000).round}KM"
   end
 end

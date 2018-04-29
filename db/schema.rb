@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_04_29_142526) do
+ActiveRecord::Schema.define(version: 2018_04_29_154532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "trips", force: :cascade do |t|
-    t.float "distance"
+    t.float "distance", default: 0.0
     t.float "price", null: false
     t.date "date", null: false
     t.string "start_address", null: false

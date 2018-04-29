@@ -7,7 +7,7 @@
 #  id                  :bigint(8)        not null, primary key
 #  date                :date             not null
 #  destination_address :string           not null
-#  distance            :float
+#  distance            :float            default(0.0)
 #  price               :float            not null
 #  start_address       :string           not null
 #  created_at          :datetime         not null
