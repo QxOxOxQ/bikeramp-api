@@ -15,7 +15,8 @@
 #
 
 class Trip < ApplicationRecord
-  validates_presence_of :destination_address, :start_address, :date, :price
+  validates :destination_address, :start_address, :date, :price, presence: true
+  validates :price, numericality: true
   # this gets records without current day
   scope :current_week, -> { where(date: Date.current.beginning_of_week...Date.today).order(:date) }
   scope :current_month, -> { where(date: Date.current.beginning_of_month...Date.current).order(:date) }
