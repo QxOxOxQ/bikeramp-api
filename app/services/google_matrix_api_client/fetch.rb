@@ -14,21 +14,19 @@ module GoogleMatrixApiClient
     end
 
     def call
-      begin
-        @response = JSON.parse(api_call)
-        if status == "OK"
-          save_distance!
-          return @trip
-        else
-          raise RestClient::Exception
-        end
-      rescue RestClient::Exception => restexception
-        puts restexception
-        return restexception
-      rescue Exception => generalexception
-        puts generalexception
-        return generalexception
+      @response = JSON.parse(api_call)
+      if status == "OK"
+        save_distance!
+        return @trip
+      else
+        return google_error_message(status)
       end
+    rescue URI::InvalidURIError => uri_error
+      puts uri_error
+      uri_error_message
+    rescue RestClient::Exception => restexception
+      puts restexception
+      restexception
     end
 
     private
@@ -72,6 +70,20 @@ module GoogleMatrixApiClient
 
       def save_distance!
         @trip.update!(distance: distance)
+      end
+
+      def google_error_message(error)
+        { error: {
+            "Response from google API": error,
+            trip: @trip }
+        }
+      end
+
+      def uri_error_message
+        { error: {
+            error: 'user only ASCII characters, (without special char for instance: "ŃĄŚ")',
+            trip: @trip }
+        }
       end
   end
 end
