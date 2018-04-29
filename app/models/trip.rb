@@ -20,4 +20,16 @@ class Trip < ApplicationRecord
   # this gets records without current day
   scope :current_week, -> { where(date: Date.current.beginning_of_week...Date.today).order(:date) }
   scope :current_month, -> { where(date: Date.current.beginning_of_month...Date.current).order(:date) }
+
+  def self.sum_price(trips)
+    trips.sum("price")
+  end
+
+  def self.sum_distance(trips)
+    trips.sum("distance")
+  end
+
+  def self.to_km(distance)
+    (distance / 1000).round
+  end
 end

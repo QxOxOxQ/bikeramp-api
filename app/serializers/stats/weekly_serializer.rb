@@ -4,10 +4,10 @@ class Stats::WeeklySerializer < ActiveModel::Serializer
   attributes :total_distance, :total_price
 
   def total_price
-    "#{object.sum("price")}PLN"
+    "#{Trip.sum_price(object)}PLN"
   end
 
   def total_distance
-    "#{(object.sum("distance") / 1000).round}KM"
-  end
+    "#{Trip.to_km(Trip.sum_distance(object))}KM"
+    end
 end
