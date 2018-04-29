@@ -53,7 +53,7 @@ module GoogleMatrixApiClient
       end
 
       def origins
-        "#{@trip.start}\&destinations\=#{@trip.finish}"
+        "#{@trip.start_address}\&destinations\=#{@trip.destination_address}"
       end
 
       def key

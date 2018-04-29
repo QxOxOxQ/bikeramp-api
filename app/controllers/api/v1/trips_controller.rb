@@ -35,10 +35,7 @@ module Api
 
       private
         def trip_params
-          attr = params.permit(:start_address, :destination_address, :price, :date)
-          attr["start"] = attr.delete("start_address")
-          attr["finish"] = attr.delete("destination_address")
-          attr
+          params.permit(:start_address, :destination_address, :price, :date)
         end
     end
   end

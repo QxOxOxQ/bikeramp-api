@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_04_25_142943) do
+ActiveRecord::Schema.define(version: 2018_04_29_142526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(version: 2018_04_25_142943) do
     t.float "distance"
     t.float "price", null: false
     t.date "date", null: false
-    t.string "start", null: false
-    t.string "finish", null: false
+    t.string "start_address", null: false
+    t.string "destination_address", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

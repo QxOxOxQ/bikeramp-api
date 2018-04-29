@@ -60,27 +60,36 @@ RSpec.describe "Trips API", type: :request do
   end
   describe "POST /api/stats/monthly" do
     let(:price) { Faker::Number.decimal(2, 2) }
-    let(:start) { "Plac Europejski 2, Warszawa, Polska" }
-    let(:finish) { "Bohomolca 15, Warszawa, Polska" }
+    let(:start_address) { "Plac Europejski 2, Warszawa, Polska" }
+    let(:destination_address) { "Bohomolca 15, Warszawa, Polska" }
     let(:date) { Faker::Date.forward(23) }
 
     context "when the request is valid" do
       let!(:valid_attributes) { {
           price: price,
-          start_address: start,
-          destination_address: finish,
+          start_address: start_address,
+          destination_address: destination_address,
           date: date }}
       before { post "/api/trips", params: valid_attributes }
+      it "returns trip object" do
+        expect(json).not_to be_empty
+        expect(json.size).to eq(5)
+        expect(json["price"]).to eq("#{price}PLN")
+        expect(json["start_address"]).to eq(start_address)
+        expect(json["destination_address"]).to eq(destination_address)
+        expect(json["distance"]).to_not eq(nil)
+      end
+
       it "returns status code 201" do
         expect(response).to have_http_status(201)
       end
     end
     context "when the request is invalid" do
-      let(:start) { "" }
+      let(:start_address) { "" }
       let!(:invalid_attributes) { {
            price: price,
-           start_address: start,
-           destination_address: finish,
+           start_address: start_address,
+           destination_address: destination_address,
            date: date }}
       before { post "/api/trips", params: invalid_attributes }
       it "returns status code 422" do
@@ -88,7 +97,7 @@ RSpec.describe "Trips API", type: :request do
       end
       it "returns a validation failure message" do
         expect(response.body)
-            .to match("{\"start\":[\"can't be blank\"]}")
+            .to match("{\"start_address\":[\"can't be blank\"]}")
       end
     end
   end
